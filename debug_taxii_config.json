@@ -1,0 +1,13 @@
+{
+    "backend": {
+        "module": "medallion.backends.mongodb_backend",
+        "module_class": "MongoBackend",
+        "uri": "mongodb://mongodb_admin:Test.123456@kubernetes.docker.internal:32517/?authSource=admin"
+    },
+    "taxii": {
+      "max_page_size": 100
+    },
+    "users": {
+        "medallion_admin": "Test.1234"
+    }
+}

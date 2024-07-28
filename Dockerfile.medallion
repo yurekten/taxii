@@ -1,0 +1,22 @@
+# Use an official Python runtime as a parent image
+FROM python:3.9-slim
+
+# Set the working directory in the container
+RUN pip install --upgrade pip
+WORKDIR /app
+
+# Install any needed packages specified in requirements.txt
+RUN pip install pymongo medallion
+
+# install utility tools
+RUN apt update && apt install -y curl
+
+# Expose the port the app runs on
+EXPOSE 80
+ENV PYTHONUNBUFFERED=1
+
+# Run the application
+CMD ["medallion", "--host=0.0.0.0", "--port=80",  "--log-level=INFO" ,"/app/medallion_config.json"]
+
+# CMD ["medallion", "--host=0.0.0.0", "--port=80",  "--debug-mode", "--log-level=INFO" ,"/app/medallion_config.json"]
+

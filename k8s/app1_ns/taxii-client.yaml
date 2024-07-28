@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app1-client
+  labels:
+    app: app1-client
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app1-client
+  template:
+    metadata:
+      labels:
+        app: app1-client
+    spec:
+      containers:
+      - name: app1-client
+        image: yurekten/taxii-client:latest
+        imagePullPolicy: Always
+        env:
+        - name: TAXII_SERVER_URL
+          value: "http://kubernetes.docker.internal:32222"
+        - name: COLLECTION_ID
+          value: "vulnerabilities"
+        - name: API_ROOT_NAME
+          value: "app2"
+        - name: MEDALLION_USERNAME
+          value: "medallion_admin"
+        - name: MEDALLION_USER_PASSWORD
+          value: "Test.1234"
+        livenessProbe:
+          exec:
+            command:
+            - cat
+            - /tmp/healthy
+          initialDelaySeconds: 20
+          periodSeconds: 10
+          timeoutSeconds: 10
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: app1-client-service
+  labels:
+    app: app1-client
+spec:
+  ports:
+  - port: 8080
+    targetPort: 8080
+    protocol: TCP
+    name: service-port
+  selector:
+    app: app1-client
+  type: ClusterIP
+

@@ -1,0 +1,82 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: medallion-config-json
+data:
+  medallion-config.json: |-
+    {
+        "backend": {
+            "module": "medallion.backends.mongodb_backend",
+            "module_class": "MongoBackend",
+            "uri": "mongodb://mongodb_admin:Test.123456@mongodb-service:27017/?authSource=admin"
+        },
+        "taxii": {
+          "max_page_size": 100
+        },
+        "users": {
+            "medallion_admin": "Test.1234",
+            "app1": "Test.1234_app1",
+            "app2": "Test.1234_app2"
+        }
+    }
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: taxii-server
+  labels:
+    app: taxii-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: taxii-server
+  template:
+    metadata:
+      labels:
+        app: taxii-server
+    spec:
+      containers:
+      - name: taxii-server
+        image: yurekten/medallion:latest
+        imagePullPolicy: Always
+        # command: ["/bin/bash", "-c", "sleep infinity"]
+        ports:
+        - containerPort: 80
+        volumeMounts:
+        - name: medallion-config-json-volume
+          subPath: medallion-config.json
+          mountPath: /app/medallion_config.json
+          readOnly: true
+        livenessProbe:
+          tcpSocket:
+            port: 80
+          initialDelaySeconds: 20
+          periodSeconds: 10
+          timeoutSeconds: 10
+      initContainers:
+      - name: wait-for-mongo
+        image: busybox:latest
+        command: ['sh', '-c', 'until nc -z mongodb-service 27017; do echo waiting for mongo; sleep 5; done;']
+      volumes:
+      - name: medallion-config-json-volume
+        configMap:
+          name: medallion-config-json
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: taxii-server-service
+  labels:
+    app: taxii-server
+spec:
+  ports:
+  - port: 80
+    targetPort: 80
+    protocol: TCP
+    name: service-port
+    nodePort: 32222
+  selector:
+    app: taxii-server
+  type: NodePort
+

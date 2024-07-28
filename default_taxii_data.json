@@ -1,0 +1,62 @@
+{
+    "discovery_database": {
+        "discovery_information": {
+            "title": "Some TAXII Server",
+            "description": "This TAXII Server contains a listing of",
+            "contact": "string containing contact information",
+            "default": "http://localhost:32222/app1/",
+            "api_roots": [
+                "http://localhost:32222/app1/",
+                "http://localhost:32222/app2/"
+            ]
+        },
+        "api_root_info": [
+            {
+                "title": "CTI TAXII Server",
+                "description": "A CTI sharing group for application 1",
+                "versions": [
+                    "taxii-2.0"
+                ],
+                "max_content_length": 9765625,
+                "_url": "http://localhost:32222/app1/",
+                "_name": "app1"
+            },
+            {
+                "title": "CTI TAXII Server",
+                "description": "A CTI sharing group for application 2",
+                "versions": [
+                    "taxii-2.0"
+                ],
+                "max_content_length": 9765625,
+                "_url": "http://localhost:32222/app2/",
+                "_name": "app2"
+            }
+        ]
+    },
+    "app1": {
+        "information": {
+            "title": "STIX 2.1 Collections for App 1",
+            "description": "A repo for general STIX data.",
+            "versions": [
+                "application/taxii+json;version=2.1"
+            ],
+            "max_content_length": 9765625
+        },
+        "status": [],
+        "collections": [],
+        "manifests": []
+    },
+    "app2": {
+        "information": {
+            "title": "STIX 2.1 Collections for App 2",
+            "description": "A repo for general STIX data.",
+            "versions": [
+                "application/taxii+json;version=2.1"
+            ],
+            "max_content_length": 9765625
+        },
+        "status": [],
+        "collections": [],
+        "manifests": []
+    }
+}

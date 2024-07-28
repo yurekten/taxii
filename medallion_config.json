@@ -1,0 +1,16 @@
+{
+    "backend": {
+        "module": "medallion.backends.mongodb_backend",
+        "module_class": "MongoBackend",
+        "uri": "mongodb+srv://mongodb_admin:Test.1234**@kubernetes.docker.internal:27017/'"
+    },
+    "taxii": {
+        "max_page_size": 100,
+        "title": "Simple TAXII Server",
+        "contact": "x@y.com",
+        "debug": false
+     },
+     "users": {
+        "medallion_admin": "Test.1234**"
+     }
+}

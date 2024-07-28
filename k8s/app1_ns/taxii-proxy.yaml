@@ -1,0 +1,87 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: auth-json
+data:
+  auth.json: |-
+    {
+        "valid_client_tokens": [
+          "6df17720-c569-4c26-92d7-6cfb5c7398c2",
+          "0b78d012-45f3-4329-89b4-5f9ee88806d2",
+          "976c6168-93a0-4c7a-9bdd-0b3b3938142f",
+          "f850dae3-95bf-4abd-86ee-0d1c72af088b",
+          "6e6cb3fa-56d4-4cb2-9a4e-7c0170b05457"
+        ]
+    }
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app1-proxy
+  labels:
+    app: app1-proxy
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app1-proxy
+  template:
+    metadata:
+      labels:
+        app: app1-proxy
+    spec:
+      containers:
+      - name: app1-proxy
+        image: yurekten/taxii-proxy:latest
+        imagePullPolicy: Always
+        # command: ["/bin/bash", "-c", "sleep infinity"]
+        ports:
+        - containerPort: 8080
+        volumeMounts:
+        - name: auth-json-volume
+          subPath: auth.json
+          mountPath: /app/auth.json
+          readOnly: true
+        env:
+        - name: TAXII_SERVER_URL
+          value: "http://kubernetes.docker.internal:32222"
+        - name: COLLECTION_ID
+          value: "vulnerabilities"
+        - name: API_ROOT_NAME
+          value: "app1"
+        - name: MEDALLION_USERNAME
+          value: "medallion_admin"
+        - name: MEDALLION_USER_PASSWORD
+          value: "Test.1234"
+        - name: TAXII_PROXY_PORT
+          value: "8080"
+        - name: TAXII_PROXY_HOST
+          value: "0.0.0.0"
+        livenessProbe:
+          tcpSocket:
+            port: 8080
+          initialDelaySeconds: 20
+          periodSeconds: 10
+          timeoutSeconds: 10
+      volumes:
+      - name: auth-json-volume
+        configMap:
+          name: auth-json
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: app1-proxy-service
+  labels:
+    app: app1-proxy
+spec:
+  ports:
+  - port: 8080
+    targetPort: 8080
+    protocol: TCP
+    name: service-port
+    nodePort: 32233
+  selector:
+    app: app1-proxy
+  type: NodePort
+
