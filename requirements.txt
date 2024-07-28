@@ -1,0 +1,7 @@
+pymongo
+medallion
+pyyaml
+requests
+stix2
+taxii2-client
+flask

@@ -1,6 +1,4 @@
 # deploy mongo db, default nodeport 32517
-
-
 bash 01_setup_mongo.sh
 
 # wait until mongo is up and create schema

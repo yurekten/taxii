@@ -1,6 +1,7 @@
 # Use an official Python runtime as a parent image
 FROM python:3.9-slim
 
+ENV PYTHONUNBUFFERED=1
 # Set the working directory in the container
 RUN pip install --upgrade pip
 WORKDIR /app
@@ -13,7 +14,6 @@ RUN apt update && apt install -y curl
 
 # Expose the port the app runs on
 EXPOSE 80
-ENV PYTHONUNBUFFERED=1
 
 # Run the application
 CMD ["medallion", "--host=0.0.0.0", "--port=80",  "--log-level=INFO" ,"/app/medallion_config.json"]
