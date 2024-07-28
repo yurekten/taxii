@@ -1,0 +1,1 @@
+kubectl logs -n app2 $(kubectl get pods -n app2 | grep app2-client | awk '{print $1}') -f

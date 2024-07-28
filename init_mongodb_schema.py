@@ -42,9 +42,9 @@ def init_mongodb(url=None):
         url = mongodb_url 
     client = None
     print("Connecting to mongodb")
-    for i in range(15):
+    for i in range(5):
         try:
-            client = MongoClient(url, connectTimeoutMS=10000, timeoutMS=10000)
+            client = MongoClient(url, connectTimeoutMS=20000, timeoutMS=20000)
             if client:
                 client.drop_database("discovery_database")
                 break

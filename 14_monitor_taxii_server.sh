@@ -1,0 +1,1 @@
+kubectl logs -n cti $(kubectl get pods -n cti | grep taxii-server | awk '{print $1}') -f

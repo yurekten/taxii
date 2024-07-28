@@ -50,9 +50,9 @@ spec:
         - name: API_ROOT_NAME
           value: "app1"
         - name: MEDALLION_USERNAME
-          value: "medallion_admin"
+          value: "app1"
         - name: MEDALLION_USER_PASSWORD
-          value: "Test.1234"
+          value: "Test.1234_app1"
         - name: TAXII_PROXY_PORT
           value: "8080"
         - name: TAXII_PROXY_HOST

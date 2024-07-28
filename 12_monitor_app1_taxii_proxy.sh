@@ -1,0 +1,1 @@
+kubectl logs -n app1 $(kubectl get pods -n app1 | grep app1-proxy | awk '{print $1}') -f

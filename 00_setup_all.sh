@@ -10,7 +10,7 @@ bash 03_setup_taxii_server.sh
 # deploy taxii proxy in app1, default nodeport 32233
 bash 04_setup_app1_taxii_proxy.sh
 
-bash 05_setup_app1_taxii_clie.sh
+bash 05_setup_app1_taxii_client.sh
 
 # deploy taxii proxy in app2, default nodeport 32244
 bash 06_setup_app2_taxii_proxy.sh
@@ -18,3 +18,5 @@ bash 06_setup_app2_taxii_proxy.sh
 bash 07_setup_app2_taxii_client.sh
 
 bash 08_create_a_cti_in_app1.sh
+
+bash 09_create_a_cti_in_app2.sh
