@@ -18,17 +18,9 @@ spec:
       - name: app1-client
         image: yurekten/taxii-client:latest
         imagePullPolicy: Always
-        env:
-        - name: TAXII_SERVER_URL
-          value: "http://kubernetes.docker.internal:32222"
-        - name: COLLECTION_ID
-          value: "vulnerabilities"
-        - name: API_ROOT_NAME
-          value: "app2"
-        - name: MEDALLION_USERNAME
-          value: "app1"
-        - name: MEDALLION_USER_PASSWORD
-          value: "Test.1234_app1"
+        envFrom:
+        - secretRef:
+            name: taxii-client-envs
         livenessProbe:
           exec:
             command:

@@ -10,3 +10,4 @@ kubectl config set-context $KUBERNETES_CONTEXT --namespace=$SERVER_NAMESPACE
 
 kubectl delete -f k8s/app2_ns/taxii-client.yaml -n $SERVER_NAMESPACE
 kubectl delete -f k8s/app2_ns/taxii-proxy.yaml -n $SERVER_NAMESPACE
+kubectl delete secret taxii-proxy-auth-json taxii-proxy-envs taxii-client-envs --namespace=$SERVER_NAMESPACE

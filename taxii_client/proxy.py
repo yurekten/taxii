@@ -81,7 +81,7 @@ def token_required(f):
 
 def create_app():
     app = Flask(__name__)
-    tokens_json = json.loads(Path("auth.json").read_text())
+    tokens_json = json.loads(Path("taxii-proxy-auth.json").read_text())
     app.config["valid_client_tokens"] = set(tokens_json["valid_client_tokens"])
     
     @app.route('/vulnerabilities', methods=['POST'])

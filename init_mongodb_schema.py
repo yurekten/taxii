@@ -13,7 +13,7 @@ root_api_names = [x.strip() for x in root_api_names_str.split(",")]
 print(f"taxii_server_url: {taxii_server_url}")
 print(f"collection_id: {collection_id}")
 print(f"managed api_root_names: {root_api_names_str}")
-print(f"mongodb_url: {mongodb_url}")
+# print(f"mongodb_url: {mongodb_url}")
     
 def add_api_root(client, url=None, title=None, description=None, versions=None, max_content_length=0, default=False):
     if not versions:

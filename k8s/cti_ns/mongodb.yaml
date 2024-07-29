@@ -58,11 +58,9 @@ spec:
           timeoutSeconds: 5
           successThreshold: 1
           failureThreshold: 6
-        env:
-        - name: MONGO_INITDB_ROOT_USERNAME
-          value: mongodb_admin
-        - name: MONGO_INITDB_ROOT_PASSWORD
-          value: Test.123456
+        envFrom:
+        - secretRef:
+            name: mongodb-envs
         volumeMounts:
         - name: mongo-data-dir
           mountPath: /data/db

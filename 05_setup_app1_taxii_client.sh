@@ -17,6 +17,10 @@ kubectl config use-context $KUBERNETES_CONTEXT
 kubectl create ns $SERVER_NAMESPACE
 
 kubectl config set-context $KUBERNETES_CONTEXT --namespace=$SERVER_NAMESPACE
+kubectl delete secret taxii-client-envs --namespace=$SERVER_NAMESPACE
+kubectl create secret generic taxii-client-envs --from-env-file k8s/app1_ns/secrets/taxii-client-envs --namespace=$SERVER_NAMESPACE
+kubectl get secret taxii-client-envs  -o jsonpath='{.data}'
+echo "secret files are created."
 
 kubectl delete -f $APP_TAXII_CLIENT_DEPLOYMENT_YAML_FILE -n $SERVER_NAMESPACE
 kubectl apply  -f $APP_TAXII_CLIENT_DEPLOYMENT_YAML_FILE -n $SERVER_NAMESPACE
