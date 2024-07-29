@@ -5,6 +5,7 @@ import os
 import time
 from pathlib import Path
 
+from stix2 import Filter, TAXIICollectionSource
 from taxii2client.v21 import Server, as_pages
 
 from taxii_client import taxii_utils
@@ -14,8 +15,20 @@ def check_collection_objects(server, api_root_name, collection_id):
 
     api_root = taxii_utils.get_api_root_name_from_server(server, api_root_name)
     collection = taxii_utils.get_api_root_name_from_api_root(api_root, collection_id)
+    
 
     if collection:
+        #####
+        ## LOGIC
+        ####
+        
+        # - Example 1: filter source with stix 
+        taxii_source =  TAXIICollectionSource(collection)
+        data = taxii_source.query(Filter('modified', '>', '2023-11-07T03:02:21.000Z'))
+        for item in data:
+            print(item)
+        
+        # - Example 2: get manifest to find vulnerabilities with date_added 
         for envelope in as_pages(collection.get_manifest, per_request=50):
             if not envelope:
                 print(f"No manifest data in  {api_root_name}/collections/{collection_id}")
@@ -33,10 +46,7 @@ def check_collection_objects(server, api_root_name, collection_id):
                     cti_item = collection.get_object(id)
                     
                     print(cti_item)
-                    ###############################################
-                    # select and process
-                    # add your logic
-                    ################################################
+
         return envelope
     return []
 
